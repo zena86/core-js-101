@@ -19,8 +19,9 @@
  *    'Tue, 26 Jan 2016 13:48:02 GMT' => Date()
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
-function parseDataFromRfc2822(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromRfc2822(value) {
+  return new Date(value);
+  // throw new Error('Not implemented');
 }
 
 /**
@@ -34,8 +35,9 @@ function parseDataFromRfc2822(/* value */) {
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromIso8601(value) {
+  return new Date(value);
+  // throw new Error('Not implemented');
 }
 
 
@@ -53,8 +55,10 @@ function parseDataFromIso8601(/* value */) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  return (new Date(year, 1, 29).getDate() === 29);
+  // throw new Error('Not implemented');
 }
 
 
@@ -73,8 +77,24 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const startDateTimestamp = new Date(startDate).getTime();
+  const endtDateTimestamp = new Date(endDate).getTime();
+
+  const timeSpan = endtDateTimestamp - startDateTimestamp;
+
+  const seconds = Math.floor((timeSpan / 1000) % 60);
+  const minutes = Math.floor((timeSpan / 1000 / 60) % 60);
+  const hours = Math.floor((timeSpan / 1000 / 60 / 60) % 24);
+  const milliseconds = timeSpan - (3600000 * hours + 60000 * minutes + 1000 * seconds);
+  const strWithoutMs = [
+    hours.toString().padStart(2, '0'),
+    minutes.toString().padStart(2, '0'),
+    seconds.toString().padStart(2, '0'),
+  ].join(':');
+
+  return `${strWithoutMs}.${milliseconds.toString().padStart(3, '0')}`;
+  // throw new Error('Not implemented');
 }
 
 

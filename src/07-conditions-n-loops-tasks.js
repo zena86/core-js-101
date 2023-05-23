@@ -27,8 +27,9 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  return (num % 3 ? '' : 'Fizz') + (num % 5 ? '' : 'Buzz') || num;
+  // throw new Error('Not implemented');
 }
 
 
@@ -43,8 +44,11 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  if (n < 0) return -1;
+  if (n === 0) return 1;
+  return (n * getFactorial(n - 1));
+  // throw new Error('Not implemented');
 }
 
 
@@ -60,8 +64,13 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let result = 0;
+  for (let i = n1; i <= n2; i += 1) {
+    result += i;
+  }
+  return result;
+  // throw new Error('Not implemented');
 }
 
 
@@ -80,8 +89,11 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  const max = Math.max(a, b, c);
+  const minArr = [a, b, c].filter((el) => el !== max);
+  return (max < minArr[0] + minArr[1] || ((a === b) && (b === c)));
+  // throw new Error('Not implemented');
 }
 
 
@@ -225,8 +237,9 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return num.toString().split('').reverse().join('');
+  // throw new Error('Not implemented');
 }
 
 
