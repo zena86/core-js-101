@@ -129,8 +129,30 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const xStartRect1 = rect1.left;
+  const yStartRect1 = rect1.top;
+  const xEndRect1 = rect1.left + rect1.width;
+  const yEndRect1 = rect1.top + rect1.height;
+
+  const xStartRect2 = rect2.left;
+  const yStartRect2 = rect2.top;
+  const xEndRect2 = rect2.left + rect2.width;
+  const yEndRect2 = rect2.top + rect2.height;
+
+  const condX1 = xStartRect2 >= xStartRect1 && xStartRect2 <= xEndRect1;
+  const condX2 = xEndRect2 >= xStartRect1 && xEndRect2 <= xEndRect1;
+  const condX3 = xStartRect2 <= xStartRect1 && xStartRect2 >= xEndRect1;
+  const condX4 = xStartRect1 >= xStartRect2 && xEndRect1 <= xEndRect2;
+
+  const condY1 = yStartRect2 >= yStartRect1 && yStartRect2 <= yEndRect1;
+  const condY2 = yEndRect2 >= yStartRect1 && yEndRect2 <= yEndRect1;
+  const condY3 = yStartRect2 <= yStartRect1 && yStartRect2 >= yEndRect1;
+
+  const condY4 = yStartRect1 >= yStartRect2 && yEndRect1 <= yEndRect2;
+
+  return ((condX1 || condX2 || condX3 || condX4) && (condY1 || condY2 || condY3 || condY4));
+  // throw new Error('Not implemented');
 }
 
 
@@ -160,8 +182,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const d = Math.sqrt((circle.center.x - point.x) ** 2 + (circle.center.y - point.y) ** 2);
+  return d < circle.radius;
+  // throw new Error('Not implemented');
 }
 
 
@@ -176,8 +200,19 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const strArr = str.split('');
+  const delArr = [];
+  for (let i = 0; i < str.length; i += 1) {
+    strArr.shift();
+
+    if (!strArr.includes(str[i]) && !delArr.includes(str[i])) {
+      return str[i];
+    }
+    delArr.push(str[i]);
+  }
+  return null;
+  // throw new Error('Not implemented');
 }
 
 
