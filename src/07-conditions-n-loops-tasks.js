@@ -309,40 +309,26 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  // let checksum = 0;
-  // const cardnumbers = ccn.split('').map(Number);
+function isCreditCardNumber(ccn) {
+  const ccnStr = ccn.toString();
 
-  // for (const [index, num] of cardnumbers.entries()) {
-  //   if (index % 2 === 0) {
-  //     const buffer = num * 2;
-  //     buffer > 9 ? checksum += buffer - 9 : checksum += buffer;
-  //   } else {
-  //     checksum += num;
-  //   }
-  // }
-  // return checksum % 10 === 0;
+  let checkNum = 0;
+  let isEven = false;
 
-  // const val = ccn.toString();
+  for (let n = ccnStr.length - 1; n >= 0; n -= 1) {
+    let digit = parseInt(ccnStr.charAt(n), 10);
+    if (isEven) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    checkNum += digit;
+    isEven = !isEven;
+  }
 
-
-  // let nCheck = 0;
-  // let bEven = false;
-
-  // for (let n = val.length - 1; n >= 0; n -= 1) {
-  //   let nDigit = parseInt(val.charAt(n), 10);
-  //   nDigit *= 2;
-
-  //   if (bEven && (nDigit) > 9) {
-  //     nDigit -= 9;
-  //   }
-
-  //   nCheck += nDigit;
-  //   bEven = !bEven;
-  // }
-
-  // return (nCheck % 10) === 0;
-  throw new Error('Not implemented');
+  return (checkNum % 10) === 0;
+  // throw new Error('Not implemented');
 }
 
 /**
