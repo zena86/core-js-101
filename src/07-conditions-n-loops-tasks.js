@@ -238,8 +238,18 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let tmpStart = '';
+  let tmpEnd = '';
+  if (a < b) {
+    tmpStart = isStartIncluded ? `[${a}` : `(${a}`;
+    tmpEnd = isEndIncluded ? `${b}]` : `${b})`;
+  } else {
+    tmpStart = isEndIncluded ? `[${b}` : `(${b}`;
+    tmpEnd = isStartIncluded ? `${a}]` : `${a})`;
+  }
+  return `${tmpStart}, ${tmpEnd}`;
+  // throw new Error('Not implemented');
 }
 
 
@@ -255,8 +265,9 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
+  // throw new Error('Not implemented');
 }
 
 
@@ -299,6 +310,38 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(/* ccn */) {
+  // let checksum = 0;
+  // const cardnumbers = ccn.split('').map(Number);
+
+  // for (const [index, num] of cardnumbers.entries()) {
+  //   if (index % 2 === 0) {
+  //     const buffer = num * 2;
+  //     buffer > 9 ? checksum += buffer - 9 : checksum += buffer;
+  //   } else {
+  //     checksum += num;
+  //   }
+  // }
+  // return checksum % 10 === 0;
+
+  // const val = ccn.toString();
+
+
+  // let nCheck = 0;
+  // let bEven = false;
+
+  // for (let n = val.length - 1; n >= 0; n -= 1) {
+  //   let nDigit = parseInt(val.charAt(n), 10);
+  //   nDigit *= 2;
+
+  //   if (bEven && (nDigit) > 9) {
+  //     nDigit -= 9;
+  //   }
+
+  //   nCheck += nDigit;
+  //   bEven = !bEven;
+  // }
+
+  // return (nCheck % 10) === 0;
   throw new Error('Not implemented');
 }
 
