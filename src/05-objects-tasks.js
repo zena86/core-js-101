@@ -65,7 +65,7 @@ function fromJSON(proto, json) {
  * Each complex selector can consists of type, id, class, attribute, pseudo-class
  * and pseudo-element selectors:
  *
- *    element#id.class[attr]:pseudoClass::pseudoElement
+ *    element#id[attr].class:pseudoClass::pseudoElement
  *              \----/\----/\----------/
  *              Can be several occurrences
  *
@@ -114,7 +114,13 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
+  // constructor() {
+  //   this.tmp = 'hi';
+  // },
+
+
   element(/* value */) {
+    // this.tmp += value;
     throw new Error('Not implemented');
   },
 
