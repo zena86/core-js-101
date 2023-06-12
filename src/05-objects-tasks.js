@@ -113,42 +113,146 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
-const cssSelectorBuilder = {
-  // constructor() {
-  //   this.tmp = 'hi';
-  // },
+class Builder {
+  constructor() {
+    this.tmp = '';
+    this.elementTmp = '';
+    this.idTmp = '';
+    this.classTmp = '';
+    this.attrTmp = '';
+    this.pseudoClassTmp = '';
+    this.pseudoElementTmp = '';
+  }
 
+  clone() {
+    const clone = new Builder();
+    clone.elementTmp = this.elementTmp;
+    clone.idTmp = this.idTmp;
+    clone.classTmp = this.classTmp;
+    clone.attrTmp = this.attrTmp;
+    clone.pseudoClassTmp = this.pseudoClassTmp;
+    clone.pseudoElementTmp = this.pseudoElementTmp;
+    return clone;
+  }
 
-  element(/* value */) {
-    // this.tmp += value;
-    throw new Error('Not implemented');
-  },
+  clear() {
+    this.tmp = '';
+    this.elementTmp = '';
+    this.idTmp = '';
+    this.classTmp = '';
+    this.attrTmp = '';
+    this.pseudoClassTmp = '';
+    this.pseudoElementTmp = '';
+  }
 
-  id(/* value */) {
-    throw new Error('Not implemented');
-  },
+  element(value) {
+    if (this.elementTmp) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector',
+      );
+    }
+    if (this.idTmp || this.attrTmp || this.classTmp
+      || this.pseudoClassTmp || this.pseudoElementTmp) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      );
+    }
+    this.elementTmp += value;
+    const clone = this.clone();
+    this.clear();
+    return clone;
+  }
 
-  class(/* value */) {
-    throw new Error('Not implemented');
-  },
+  id(value) {
+    if (this.idTmp) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector',
+      );
+    }
+    if (this.attrTmp || this.classTmp
+      || this.pseudoClassTmp || this.pseudoElementTmp) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      );
+    }
+    this.idTmp += `#${value}`;
+    const clone = this.clone();
+    this.clear();
+    return clone;
+  }
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
-  },
+  class(value) {
+    if (this.attrTmp || this.pseudoClassTmp || this.pseudoElementTmp) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      );
+    }
+    this.classTmp += `.${value}`;
+    const clone = this.clone();
+    this.clear();
+    return clone;
+  }
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
-  },
+  attr(value) {
+    if (this.pseudoClassTmp || this.pseudoElementTmp) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      );
+    }
+    this.attrTmp += `[${value}]`;
+    const clone = this.clone();
+    this.clear();
+    return clone;
+  }
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
-  },
+  pseudoClass(value) {
+    if (this.pseudoElementTmp) {
+      throw new Error(
+        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      );
+    }
+    this.pseudoClassTmp += `:${value}`;
+    const clone = this.clone();
+    this.clear();
+    return clone;
+  }
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
-  },
-};
+  pseudoElement(value) {
+    if (this.pseudoElementTmp) {
+      throw new Error(
+        'Element, id and pseudo-element should not occur more then one time inside the selector',
+      );
+    }
+    this.pseudoElementTmp += `::${value}`;
+    const clone = this.clone();
+    this.clear();
+    return clone;
+  }
 
+  combine(selector1, combinator, selector2) {
+    const part2 = selector2.stringify();
+    const part1 = selector1.stringify();
+    const clone = this.clone();
+    this.clear();
+    clone.tmp = `${part1} ${combinator} ${part2}`;
+    return clone;
+  }
+
+  stringify() {
+    let result = '';
+    if (this.tmp) {
+      result = this.tmp;
+      this.clear();
+      return result;
+    }
+
+    result = `${this.elementTmp}${this.idTmp}${this.attrTmp}${this.classTmp}${this.pseudoClassTmp}${this.pseudoElementTmp}`;
+    this.clear();
+    return result;
+  }
+}
+
+const cssSelectorBuilder = new Builder();
 
 module.exports = {
   Rectangle,
