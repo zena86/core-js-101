@@ -474,8 +474,8 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-  return m1.map((row, i) => m2[0]
-    .map((_item, j) => row.reduce((acc, _el, n) => acc + m1[i][n] * m2[n][j], 0)));
+  return m1.map((row, i) => m2[0].map((_item, j) => row
+    .reduce((acc, _el, n) => acc + m1[i][n] * m2[n][j], 0)));
   // throw new Error('Not implemented');
 }
 
@@ -509,8 +509,66 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  let row0 = [];
+  let row1 = [];
+  let row2 = [];
+  const col0 = [];
+  const col1 = [];
+  const col2 = [];
+  const d1 = [];
+  const d2 = [];
+
+  const checkArr = (arr) => {
+    const count = arr.reduce((acc, item) => acc + (item === 'X') - (item === '0'), 0);
+    if (count === 3) { return 'X'; }
+    if (count === -3) { return '0'; }
+    return undefined;
+  };
+
+  for (let i = 0; i < position.length; i += 1) {
+    if (i === 0) {
+      row0 = position[i];
+    } else if (i === 1) {
+      row1 = position[i];
+    } else {
+      row2 = position[i];
+    }
+    checkArr(position[i]);
+    for (let j = 0; j < position[i].length; j += 1) {
+      if (j === 0) {
+        col0.push(position[i][j]);
+      } else if (j === 1) {
+        col1.push(position[i][j]);
+      } else if (j === 2) {
+        col2.push(position[i][j]);
+      }
+
+      if (i === j) {
+        d1.push(position[i][j]);
+      }
+
+      if (
+        (i === 0 && j === 2)
+        || (i === 1 && j === 1)
+        || (i === 2 && j === 0)
+      ) {
+        d2.push(position[i][j]);
+      }
+    }
+  }
+  return (
+    checkArr(row0)
+    || checkArr(row1)
+    || checkArr(row2)
+    || checkArr(col0)
+    || checkArr(col1)
+    || checkArr(col2)
+    || checkArr(d1)
+    || checkArr(d2)
+    || undefined
+  );
+  // throw new Error('Not implemented');
 }
 
 module.exports = {
